@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.TimePicker
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.alarmclock.R
-import com.example.alarmclock.model.AlarmItem
+import com.example.alarmclock.room.AlarmItem
 import com.example.alarmclock.view.alarmClock.AlarmClockAdapter.*
 
 
@@ -29,7 +29,7 @@ class AlarmClockAdapter(private val data: List<AlarmItem>) :
 
     override fun onBindViewHolder(holder: AlarmClockViewHolder, position: Int) {
         //set values
-        holder.time.text = data[position].time
+        holder.time.text = data[position].alarm
         holder.switch.isChecked = data[position].isOn
         holder.timePicker.setIs24HourView(true)
 
@@ -45,12 +45,13 @@ class AlarmClockAdapter(private val data: List<AlarmItem>) :
             else View.VISIBLE
     }
 
+    fun getAlarmItem(position: Int) = data[position]
+
 
     //---------------------------------------------------------------------------//
 
     // holder class to hold reference
     inner class AlarmClockViewHolder(view: View) : ViewHolder(view) {
-        //get view reference
         var view: View = view.findViewById(R.id.alarmItemView) as View
         var expandableView: View = view.findViewById(R.id.expandableView) as View
         var time: TextView = view.findViewById(R.id.timeTxt) as TextView

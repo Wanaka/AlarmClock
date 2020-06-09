@@ -3,22 +3,20 @@ package com.example.alarmclock.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.alarmclock.MainApplication
 import com.example.alarmclock.R
-import com.example.alarmclock.di.ApplicationComponent
+import com.example.alarmclock.util.NavigationImpl
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var component: ApplicationComponent
+    private val navigator: NavigationImpl by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        component = (applicationContext as MainApplication).appComp
-        component.inject(this)
         setContentView(R.layout.activity_main)
     }
 
-    fun showTimePickerFragment(view: View) {
-        component.navigator.openTimePicker(supportFragmentManager)
+    fun showOpenTimePicker(v: View){
+        navigator.openTimePicker(supportFragmentManager)
     }
 }

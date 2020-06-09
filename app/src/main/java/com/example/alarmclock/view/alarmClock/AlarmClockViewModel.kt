@@ -1,21 +1,30 @@
 package com.example.alarmclock.view.alarmClock
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.example.alarmclock.model.AlarmItem
+import androidx.lifecycle.viewModelScope
 import com.example.alarmclock.repository.AlarmClockRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import com.example.alarmclock.room.AlarmItem
+import com.example.alarmclock.util.add0IfNeeded
+import kotlinx.coroutines.launch
 
-class AlarmClockViewModel  @Inject constructor(private var repo: AlarmClockRepository): ViewModel() {
+class AlarmClockViewModel constructor(var repo: AlarmClockRepository) : ViewModel() {
 
-    val alarmList: LiveData<List<AlarmItem>> = liveData {
-        emit(fakeDataViewModel())
+    fun setAlarmTime(hourOfDay: Int, minute: Int) = viewModelScope.launch {
+        repo.insert(AlarmItem(correctTime(hourOfDay, minute), isOn = true))
     }
 
-    private suspend fun fakeDataViewModel(): List<AlarmItem> = withContext(Dispatchers.Default) {
-        repo.fakeDataRepo()
+    fun delete(alarmItem: AlarmItem) = viewModelScope.launch {
+        repo.delete(alarmItem)
     }
+
+    val getList: LiveData<List<AlarmItem>> = repo.getList()
+
+
+    //---------------//
+
+    private fun correctTime(hourOfDay: Int, minuteOfDay: Int): String =
+        "${hourOfDay.add0IfNeeded()}:${minuteOfDay.add0IfNeeded()}"
+
 }

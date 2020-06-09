@@ -1,10 +1,15 @@
 package com.example.alarmclock.repository
 
-import com.example.alarmclock.model.AlarmItem
-import javax.inject.Inject
+import androidx.lifecycle.LiveData
+import com.example.alarmclock.room.AlarmItem
 
-class AlarmClockRepository @Inject constructor() {
+interface AlarmClockRepository {
 
-    fun fakeDataRepo(): List<AlarmItem> =
-        listOf(AlarmItem("07:00", true), AlarmItem("10:00", false))
+    suspend fun insert(alarmItem: AlarmItem)
+
+    suspend fun update(alarmItem: AlarmItem)
+
+    suspend fun delete(alarmItem: AlarmItem)
+
+    fun getList(): LiveData<List<AlarmItem>>
 }
