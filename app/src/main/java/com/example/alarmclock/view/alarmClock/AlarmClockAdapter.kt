@@ -1,5 +1,6 @@
 package com.example.alarmclock.view.alarmClock
 
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,10 @@ import com.example.alarmclock.room.AlarmItem
 import com.example.alarmclock.view.alarmClock.AlarmClockAdapter.*
 
 
-class AlarmClockAdapter(private val data: List<AlarmItem>) :
+class AlarmClockAdapter(
+    private val data: List<AlarmItem>,
+    private val onItemClick: (alarmItem: AlarmItem) -> Unit
+) :
     Adapter<AlarmClockViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -36,6 +40,10 @@ class AlarmClockAdapter(private val data: List<AlarmItem>) :
         holder.view.setOnClickListener {
             setVisibility(holder.expandableView)
             setVisibility(holder.timePicker)
+        }
+
+        holder.switch.setOnClickListener {
+            onItemClick.invoke(AlarmItem(data[position].alarm, holder.switch.isChecked))
         }
     }
 

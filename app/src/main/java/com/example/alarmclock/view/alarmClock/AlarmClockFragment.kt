@@ -24,10 +24,13 @@ class AlarmClockFragment : Fragment() {
     private val viewModel by viewModel<AlarmClockViewModel>()
     private val swipe: Swipe by inject()
     lateinit var alarmClockAdapter: AlarmClockAdapter
+    private lateinit var onItemClick: (alarmItem: AlarmItem) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         alarmClockList()
+        updateList()
     }
 
     override fun onCreateView(
@@ -45,12 +48,19 @@ class AlarmClockFragment : Fragment() {
 
     private fun alarmClockRecyclerView(data: List<AlarmItem>) {
         alarmRecyclerView.apply {
-            alarmClockAdapter = AlarmClockAdapter(data)
+            alarmClockAdapter = AlarmClockAdapter(data, onItemClick)
             layoutManager = LinearLayoutManager(context)
             adapter = alarmClockAdapter
             addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
         }
+
         swipe()
+    }
+
+    private fun updateList() {
+        onItemClick = { alarmItem ->
+            viewModel.update(alarmItem)
+        }
     }
 
     private fun swipe() {

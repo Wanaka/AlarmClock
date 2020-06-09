@@ -11,20 +11,22 @@ import kotlinx.coroutines.launch
 
 class AlarmClockViewModel constructor(var repo: AlarmClockRepository) : ViewModel() {
 
+    val getList: LiveData<List<AlarmItem>> = repo.getList()
+
     fun setAlarmTime(hourOfDay: Int, minute: Int) = viewModelScope.launch {
         repo.insert(AlarmItem(correctTime(hourOfDay, minute), isOn = true))
+    }
+
+    fun update(alarmItem: AlarmItem) = viewModelScope.launch {
+        repo.update(alarmItem)
     }
 
     fun delete(alarmItem: AlarmItem) = viewModelScope.launch {
         repo.delete(alarmItem)
     }
 
-    val getList: LiveData<List<AlarmItem>> = repo.getList()
 
-
-    //---------------//
 
     private fun correctTime(hourOfDay: Int, minuteOfDay: Int): String =
         "${hourOfDay.add0IfNeeded()}:${minuteOfDay.add0IfNeeded()}"
-
 }

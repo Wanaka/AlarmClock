@@ -12,6 +12,9 @@ interface AlarmDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(alarmItem: AlarmItem)
 
+    @Update
+    suspend fun update(alarmItem: AlarmItem)
+
     @Delete
     suspend fun delete(alarmItem: AlarmItem)
 }
