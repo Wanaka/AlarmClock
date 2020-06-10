@@ -7,7 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "alarm_table")
 data class AlarmItem(
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+
     @ColumnInfo(name = "alarm")
     var alarm: String,
 

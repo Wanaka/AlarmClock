@@ -2,7 +2,6 @@ package com.example.alarmclock.view.alarmClock
 
 import android.graphics.Canvas
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +22,8 @@ class AlarmClockFragment : Fragment() {
 
     private val viewModel by viewModel<AlarmClockViewModel>()
     private val swipe: Swipe by inject()
-    lateinit var alarmClockAdapter: AlarmClockAdapter
-    private lateinit var onItemClick: (alarmItem: AlarmItem) -> Unit
+    lateinit var alarmClockAdapter: AlarmClockAdapter // inject??
+    private lateinit var onItemClick: (id: Int, hour: Int, minute: Int, isOn: Boolean) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,14 +52,7 @@ class AlarmClockFragment : Fragment() {
             adapter = alarmClockAdapter
             addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
         }
-
         swipe()
-    }
-
-    private fun updateList() {
-        onItemClick = { alarmItem ->
-            viewModel.update(alarmItem)
-        }
     }
 
     private fun swipe() {
@@ -75,7 +67,7 @@ class AlarmClockFragment : Fragment() {
                 }
 
                 override fun onSwiped(vH: RecyclerView.ViewHolder, position: Int) {
-                    val alarmItem = alarmClockAdapter.getAlarmItem(vH.adapterPosition)
+                    val alarmItem = alarmClockAdapter.deleteAlarmItem(vH.adapterPosition)
                     viewModel.delete(alarmItem)
                 }
 
@@ -94,6 +86,12 @@ class AlarmClockFragment : Fragment() {
             }
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(alarmRecyclerView)
+    }
+
+    private fun updateList() {
+        onItemClick = { id, hour, minute, isOn ->
+            viewModel.update(id, hour, minute, isOn)
+        }
     }
 
 

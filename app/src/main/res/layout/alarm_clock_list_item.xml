@@ -36,7 +36,7 @@
         android:id="@+id/expandableView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorGreyWhite"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +55,19 @@
         app:layout_constraintStart_toStartOf="@+id/expandableView"
         app:layout_constraintTop_toTopOf="@+id/expandableView"
         tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/okBtn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:drawableStart="@drawable/ic_ok"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toStartOf="@+id/alarmSwitch"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        tools:visibility="visible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

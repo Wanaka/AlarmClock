@@ -14,17 +14,16 @@ class AlarmClockViewModel constructor(var repo: AlarmClockRepository) : ViewMode
     val getList: LiveData<List<AlarmItem>> = repo.getList()
 
     fun setAlarmTime(hourOfDay: Int, minute: Int) = viewModelScope.launch {
-        repo.insert(AlarmItem(correctTime(hourOfDay, minute), isOn = true))
+        repo.insert(AlarmItem(0, correctTime(hourOfDay, minute), isOn = true))
     }
 
-    fun update(alarmItem: AlarmItem) = viewModelScope.launch {
-        repo.update(alarmItem)
+    fun update(id: Int, hourOfDay: Int, minute: Int, isOn: Boolean) = viewModelScope.launch {
+        repo.update(AlarmItem(id, correctTime(hourOfDay, minute), isOn))
     }
 
     fun delete(alarmItem: AlarmItem) = viewModelScope.launch {
         repo.delete(alarmItem)
     }
-
 
 
     private fun correctTime(hourOfDay: Int, minuteOfDay: Int): String =

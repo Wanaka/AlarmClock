@@ -5,3 +5,5 @@ fun Int.add0IfNeeded(): String {
     if (this < 10) newNumber = "0$this"
     return newNumber
 }
+
+fun String.splitting(): List<String> = this.split(":")
