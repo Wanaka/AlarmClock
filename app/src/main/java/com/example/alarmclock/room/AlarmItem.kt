@@ -14,5 +14,8 @@ data class AlarmItem(
     var alarm: String,
 
     @ColumnInfo(name = "is_on")
-    var isOn: Boolean
+    var isOn: Boolean,
+
+    @ColumnInfo(name = "req_code")
+    var reqCode: Int
 )

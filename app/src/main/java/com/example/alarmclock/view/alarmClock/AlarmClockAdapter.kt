@@ -16,7 +16,7 @@ import com.example.alarmclock.view.alarmClock.AlarmClockAdapter.*
 
 class AlarmClockAdapter(
     private val data: List<AlarmItem>,
-    private val onItemClick: (id: Int, hour: Int, minute: Int, isOn: Boolean) -> Unit
+    private val onItemClick: (id: Int, hour: Int, minute: Int, isOn: Boolean, reqCode: Int) -> Unit
 ) :
     Adapter<AlarmClockViewHolder>() {
 
@@ -35,6 +35,7 @@ class AlarmClockAdapter(
     override fun onBindViewHolder(holder: AlarmClockViewHolder, position: Int) {
         //set values
         var id = data[position].id
+        var reqCode = data[position].reqCode
         holder.time.text = data[position].alarm
         holder.switch.isChecked = data[position].isOn
         holder.timePicker.setIs24HourView(true)
@@ -42,11 +43,17 @@ class AlarmClockAdapter(
         //-- Buttons --//
         holder.switch.setOnClickListener {
             var time = data[position].alarm.splitting()
-            updateAlarmItem(id, time[0].toInt(), time[1].toInt(), holder.switch.isChecked)
+            updateAlarmItem(id, time[0].toInt(), time[1].toInt(), holder.switch.isChecked, reqCode)
         }
 
         holder.okBtn.setOnClickListener {
-            updateAlarmItem(id, holder.timePicker.hour, holder.timePicker.minute, holder.switch.isChecked)
+            updateAlarmItem(
+                id,
+                holder.timePicker.hour,
+                holder.timePicker.minute,
+                holder.switch.isChecked,
+                reqCode
+            )
         }
 
         holder.view.setOnClickListener {
@@ -57,8 +64,8 @@ class AlarmClockAdapter(
     }
 
 
-    private fun updateAlarmItem(id: Int, hour: Int, minute: Int, isOn: Boolean) =
-        onItemClick.invoke(id, hour, minute, isOn)
+    private fun updateAlarmItem(id: Int, hour: Int, minute: Int, isOn: Boolean, reqCode: Int) =
+        onItemClick.invoke(id, hour, minute, isOn, reqCode)
 
     private fun setVisibility(holder: View) {
         holder.visibility =

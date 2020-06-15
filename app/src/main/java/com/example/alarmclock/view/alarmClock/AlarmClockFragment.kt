@@ -13,17 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alarmclock.R
 import com.example.alarmclock.room.AlarmItem
+import com.example.alarmclock.util.NavigationImpl
 import com.example.alarmclock.util.Swipe
+import com.example.alarmclock.util.getAlarmCalendar
 import kotlinx.android.synthetic.main.fragment_alarm_clock.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AlarmClockFragment : Fragment() {
 
+    private val navigator: NavigationImpl by inject()
     private val viewModel by viewModel<AlarmClockViewModel>()
     private val swipe: Swipe by inject()
     lateinit var alarmClockAdapter: AlarmClockAdapter // inject??
-    private lateinit var onItemClick: (id: Int, hour: Int, minute: Int, isOn: Boolean) -> Unit
+    private lateinit var onItemClick: (id: Int, hour: Int, minute: Int, isOn: Boolean, reqCode: Int) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,8 +92,24 @@ class AlarmClockFragment : Fragment() {
     }
 
     private fun updateList() {
-        onItemClick = { id, hour, minute, isOn ->
-            viewModel.update(id, hour, minute, isOn)
+        onItemClick = { id, hour, minute, isOn, reqCode ->
+            viewModel.update(id, hour, minute, isOn, reqCode)
+            toggleAlarm(hour, minute, isOn, reqCode)
+        }
+    }
+
+    private fun toggleAlarm(hourOfDay: Int, minute: Int, isOn: Boolean, reqCode: Int) {
+        when (isOn) {
+            true -> {
+                navigator.createAlarm(
+                    activity!!.applicationContext,
+                    getAlarmCalendar(hourOfDay, minute),
+                    reqCode
+                )
+            }
+            false-> {
+                navigator.cancelAlarm(activity!!.applicationContext, reqCode)
+            }
         }
     }
 
