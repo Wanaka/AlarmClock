@@ -1,5 +1,7 @@
 package com.example.alarmclock.util
 
+import android.content.Context
+import android.widget.Toast
 import java.util.*
 
 fun correctTime(hourOfDay: Int, minuteOfDay: Int): String =
@@ -31,3 +33,6 @@ fun getAlarmCalendar(hourOfDay: Int, minute: Int): Long {
 
     return calSet.timeInMillis
 }
+
+fun toast(context: Context, title: String) =
+    Toast.makeText(context, title, Toast.LENGTH_LONG).show()

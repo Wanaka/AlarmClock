@@ -2,6 +2,7 @@ package com.example.alarmclock.view.alarmClock
 
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class AlarmClockFragment : Fragment() {
     private val swipe: Swipe by inject()
     lateinit var alarmClockAdapter: AlarmClockAdapter // inject??
     private lateinit var onItemClick: (id: Int, hour: Int, minute: Int, isOn: Boolean, reqCode: Int) -> Unit
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +109,7 @@ class AlarmClockFragment : Fragment() {
                     reqCode
                 )
             }
-            false-> {
+            false -> {
                 navigator.cancelAlarm(activity!!.applicationContext, reqCode)
             }
         }
