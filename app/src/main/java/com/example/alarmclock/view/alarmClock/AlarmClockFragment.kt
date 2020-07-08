@@ -45,7 +45,7 @@ class AlarmClockFragment : Fragment() {
     }
 
     private fun alarmClockList() {
-        viewModel.getList.observe(this, Observer {
+        viewModel.getList().observe(this, Observer {
             alarmClockRecyclerView(it)
         })
     }
