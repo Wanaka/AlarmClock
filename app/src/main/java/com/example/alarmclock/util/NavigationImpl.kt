@@ -18,7 +18,6 @@ class NavigationImpl : Navigation {
         TimePickerFragmentDialog().show(supportFragmentManager, "timePicker")
     }
 
-
     override fun createAlarm(context: Context, time: Long, reqCode: Int) {
         val intent = Intent(context, AlarmBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, reqCode, intent, 0)

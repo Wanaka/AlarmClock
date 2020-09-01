@@ -2,7 +2,6 @@ package com.example.alarmclock.view.alarmClock
 
 import android.graphics.Canvas
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,9 +25,8 @@ class AlarmClockFragment : Fragment() {
     private val navigator: NavigationImpl by inject()
     private val viewModel by viewModel<AlarmClockViewModel>()
     private val swipe: Swipe by inject()
-    lateinit var alarmClockAdapter: AlarmClockAdapter // inject??
+    lateinit var alarmClockAdapter: AlarmClockAdapter
     private lateinit var onItemClick: (id: Int, hour: Int, minute: Int, isOn: Boolean, reqCode: Int) -> Unit
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +56,28 @@ class AlarmClockFragment : Fragment() {
             addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
         }
         swipe()
+    }
+
+    private fun updateList() {
+        onItemClick = { id, hour, minute, isOn, reqCode ->
+            viewModel.update(id, hour, minute, isOn, reqCode)
+            toggleAlarm(hour, minute, isOn, reqCode)
+        }
+    }
+
+    private fun toggleAlarm(hourOfDay: Int, minute: Int, isOn: Boolean, reqCode: Int) {
+        when (isOn) {
+            true -> {
+                navigator.createAlarm(
+                    activity!!.applicationContext,
+                    getAlarmCalendar(hourOfDay, minute),
+                    reqCode
+                )
+            }
+            false -> {
+                navigator.cancelAlarm(activity!!.applicationContext, reqCode)
+            }
+        }
     }
 
     private fun swipe() {
@@ -91,38 +111,5 @@ class AlarmClockFragment : Fragment() {
             }
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(alarmRecyclerView)
-    }
-
-    private fun updateList() {
-        onItemClick = { id, hour, minute, isOn, reqCode ->
-            viewModel.update(id, hour, minute, isOn, reqCode)
-            toggleAlarm(hour, minute, isOn, reqCode)
-        }
-    }
-
-    private fun toggleAlarm(hourOfDay: Int, minute: Int, isOn: Boolean, reqCode: Int) {
-        when (isOn) {
-            true -> {
-                navigator.createAlarm(
-                    activity!!.applicationContext,
-                    getAlarmCalendar(hourOfDay, minute),
-                    reqCode
-                )
-            }
-            false -> {
-                navigator.cancelAlarm(activity!!.applicationContext, reqCode)
-            }
-        }
-    }
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AlarmClockFragment().apply {
-                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-                }
-            }
     }
 }

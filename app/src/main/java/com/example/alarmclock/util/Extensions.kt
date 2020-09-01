@@ -1,7 +1,6 @@
 package com.example.alarmclock.util
 
 import android.content.Context
-import android.util.Log.d
 import android.widget.Toast
 import java.util.*
 
@@ -18,16 +17,17 @@ fun String.splitting(): List<String> = this.split(":")
 
 fun reqCode(): Int = (0..1000).random()
 
+fun calendar(): Calendar = Calendar.getInstance()
+
 fun getAlarmCalendar(hourOfDay: Int, minute: Int): Long {
-    val calNow = Calendar.getInstance()
-    val calSet = Calendar.getInstance()
+    val cal = calendar()
 
-    calSet[Calendar.HOUR_OF_DAY] = hourOfDay
-    calSet[Calendar.MINUTE] = minute
-    calSet[Calendar.SECOND] = 0
-    calSet[Calendar.MILLISECOND] = 0
+    cal[Calendar.HOUR_OF_DAY] = hourOfDay
+    cal[Calendar.MINUTE] = minute
+    cal[Calendar.SECOND] = 0
+    cal[Calendar.MILLISECOND] = 0
 
-    return calSet.timeInMillis
+    return cal.timeInMillis
 }
 
 fun toast(context: Context, title: String) =

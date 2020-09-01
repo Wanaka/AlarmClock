@@ -1,5 +1,6 @@
-package com.example.alarmclock.util
+package com.example.alarmclock
 
+import com.example.alarmclock.util.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Before
@@ -48,9 +49,14 @@ class ExtensionTest {
     }
 
     @Test
-    fun `getAlarmCalendar, set hour and time to be returned in milliseconds in calendar`(){
-        val calNow = Calendar.getInstance()
-        val calSet = calNow.clone() as Calendar
+    fun `calendar, return a calendar`() {
+        var cal = calendar()
+        assertThat(cal, equalTo(cal))
+    }
+
+    @Test
+    fun `getAlarmCalendar, set hour and time to be returned in milliseconds in calendar`() {
+        val calSet = Calendar.getInstance()
 
         calSet[Calendar.HOUR_OF_DAY] = 11
         calSet[Calendar.MINUTE] = 15

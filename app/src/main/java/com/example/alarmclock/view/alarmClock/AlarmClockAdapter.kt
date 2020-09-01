@@ -25,7 +25,6 @@ class AlarmClockAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmClockViewHolder {
-        // create view holder to hold reference
         return AlarmClockViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.alarm_clock_list_item, parent, false)
@@ -33,7 +32,6 @@ class AlarmClockAdapter(
     }
 
     override fun onBindViewHolder(holder: AlarmClockViewHolder, position: Int) {
-        //set values
         var id = data[position].id
         var reqCode = data[position].reqCode
         holder.time.text = data[position].alarm
@@ -41,6 +39,12 @@ class AlarmClockAdapter(
         holder.timePicker.setIs24HourView(true)
 
         //-- Buttons --//
+        holder.view.setOnClickListener {
+            setVisibility(holder.expandableView)
+            setVisibility(holder.timePicker)
+            setVisibility(holder.okBtn)
+        }
+
         holder.switch.setOnClickListener {
             var time = data[position].alarm.splitting()
             updateAlarmItem(id, time[0].toInt(), time[1].toInt(), holder.switch.isChecked, reqCode)
@@ -54,12 +58,6 @@ class AlarmClockAdapter(
                 holder.switch.isChecked,
                 reqCode
             )
-        }
-
-        holder.view.setOnClickListener {
-            setVisibility(holder.expandableView)
-            setVisibility(holder.timePicker)
-            setVisibility(holder.okBtn)
         }
     }
 
@@ -76,10 +74,7 @@ class AlarmClockAdapter(
     fun deleteAlarmItem(position: Int) = data[position]
 
 
-    //---------------------------------------------------------------------------//
-
-    // holder class to hold reference
-    inner class AlarmClockViewHolder(view: View) : ViewHolder(view) {
+    class AlarmClockViewHolder(view: View) : ViewHolder(view) {
         var view: View = view.findViewById(R.id.alarmItemView) as View
         var expandableView: View = view.findViewById(R.id.expandableView) as View
         var time: TextView = view.findViewById(R.id.timeTxt) as TextView
